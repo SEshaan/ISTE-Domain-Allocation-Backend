@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/config/cors.ts","./src/config/db.ts","./src/config/firebase.ts","./src/middlewares/apiKey.ts","./src/middlewares/firebase.ts","./src/types/express.d.ts","./src/types/user.ts"],"version":"5.9.3"}

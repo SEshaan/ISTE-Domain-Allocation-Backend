@@ -1,0 +1,38 @@
+{
+  "name": "iste-domain-allocation-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc -b",
+    "start": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivamsaini124/ISTE-Domain-Allocation-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/shivamsaini124/ISTE-Domain-Allocation-Backend/issues"
+  },
+  "homepage": "https://github.com/shivamsaini124/ISTE-Domain-Allocation-Backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotconfig": "^0.0.1-security",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.6.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.1.4",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.8"
+  }
+}
