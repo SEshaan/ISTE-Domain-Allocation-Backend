@@ -1,17 +1,23 @@
 import {Schema, model} from 'mongoose';
 
-const McqQuestionSchema = new Schema({
+const mcqQuestionSchema = new Schema({
     question: {type: String, required: true},
     options: [{type: String, required: true}],
-    correctOptionIndex: {type: Number, required: true},
-    domainId: {type: Schema.Types.ObjectId, ref: 'Domain', required: true},
+    correctOptionIndex: {type: Number, required: true}
 });
 
-const TextQuestionSchema = new Schema({
-    Question: {type: String, required: true},
-    domainId: {type: Schema.Types.ObjectId, ref: 'Domain', required: true},
+const textQuestionSchema = new Schema({
+    question: {type: String, required: true},
 });
 
 
-export const McqQuestion = model('McqQuestion', McqQuestionSchema);
-export const TextQuestion = model('TextQuestion', TextQuestionSchema);
+const questionarreSchema = new Schema({
+    domainId: {type: Schema.Types.ObjectId, ref: 'Domain', required: true},
+    mcqQuestions: [{type: Schema.Types.ObjectId, ref: 'McqQuestion'}],
+    textQuestions: [{type: Schema.Types.ObjectId, ref: 'TextQuestion'}],
+    dueDate: {type: Date, required: true},
+});
+
+export const Questionarre = model('Questionarre', questionarreSchema);
+export const McqQuestion = model('McqQuestion', mcqQuestionSchema);
+export const TextQuestion = model('TextQuestion', textQuestionSchema);

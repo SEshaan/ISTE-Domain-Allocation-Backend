@@ -1,17 +1,23 @@
 import {Schema, model} from 'mongoose';
 
-const McqAnswerSchema = new Schema({
-    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+const mcqAnswerSchema = new Schema({
     questionId: {type: Schema.Types.ObjectId, ref: 'McqQuestion', required: true},
-    domainId: {type: Schema.Types.ObjectId, ref: 'Domain', required: true},
     selectedOptionIndex: {type: Number, required: true}
 })
 
-const TextAnswerSchema = new Schema({
-    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+const textAnswerSchema = new Schema({
     questionId: {type: Schema.Types.ObjectId, ref: 'TextQuestion', required: true},
-    domainId: {type: Schema.Types.ObjectId, ref: 'Domain', required: true},
     answerText: {type: String, required: true}
 })
-export const TextAnswer = model('TextAnswer', TextAnswerSchema);
-export const McqAnswer = model('McqAnswer', McqAnswerSchema);
+
+const responseSchema = new Schema({
+    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    questionarreId: {type: Schema.Types.ObjectId, ref: 'Questionarre', required: true},
+    mcqAnswers: [mcqAnswerSchema],
+    textAnswers: [textAnswerSchema],
+    submittedAt: {type: Date, default: Date.now}
+});
+
+export const Response = model('Response', responseSchema);
+export const TextAnswer = model('TextAnswer', textAnswerSchema);
+export const McqAnswer = model('McqAnswer', mcqAnswerSchema);
