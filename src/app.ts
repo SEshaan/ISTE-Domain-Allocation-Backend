@@ -8,7 +8,9 @@ import type {NextFunction, Request, Response} from 'express';
 import {corsOptions} from './config/cors.js';
 import {connectToDatabase} from './config/db.js';
 import {verifyFirebaseToken} from './middlewares/firebase.js';
-import { apiKeyMiddleware } from './middlewares/apiKey.js';
+import {apiKeyMiddleware} from './middlewares/apiKey.js';
+import {verifyAdmin} from './middlewares/admin.js';
+import {verifyUser} from './middlewares/user.js';
 
 //Importing all models here
 
@@ -31,9 +33,14 @@ app.get('/health', apiKeyMiddleware, (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'API is healthy' });
 });
 
-app.get('/secured', apiKeyMiddleware, verifyFirebaseToken, (req: Request, res: Response) => {
+app.get('/secured/user', apiKeyMiddleware, verifyFirebaseToken, verifyUser, (req: Request, res: Response) => {
   console.log('User Info:', req.user);
   res.status(200).json({ status: 'OK', message: 'Secured API is healthy' });
+});
+
+app.get('/secured/admin', apiKeyMiddleware, verifyFirebaseToken, verifyAdmin, (req: Request, res: Response) => {
+  console.log('Admin Info:', req.user);
+  res.status(200).json({ status: 'OK', message: 'Secured Admin API is healthy' });
 });
 
 // Global error handler

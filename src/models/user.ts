@@ -2,9 +2,10 @@ import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema({
     name: {type: String, required: true},
-    regNo: {type: String, required: true, unique: true},
+    regNo: {type: String, unique: true},
     email: {type: String, required: true, unique: true},
-    branch: {type: String, required: true},
+    isBlacklisted: {type:Boolean, required: true, default: false},
+    branch: {type: String},
     githubLink: {type: String, required: true, unique: true},
     leetcodeLink: {type: String, required: true, unique: true},
     selectedDomainIds: {

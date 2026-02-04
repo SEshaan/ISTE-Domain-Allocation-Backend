@@ -1,6 +1,5 @@
-export interface User {
+export interface UserInterface {
     email: string;
     name: string;
     regNo: string;
-    admin?: boolean;
 }
