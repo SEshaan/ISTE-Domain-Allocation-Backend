@@ -1,12 +1,20 @@
 import type { Request, Response } from "express";
 import type { UserInterface } from "../../types/user.js";
 import { User } from "../../models/user.js";
+import { WhitelistedUser } from "../../models/whitelistedUser.js";
 
 export const loginOrSignup = async (req: Request, res: Response) => {
     try{
         const user: UserInterface | undefined = req.user;
         if(!user){
             return  res.status(401).json({message: "Unauthorized: No user information provided"});
+        }
+
+        //Checking if user is whitelisted or not
+        const whitelistedUser = await WhitelistedUser.findOne({email: user.email});
+
+        if(!whitelistedUser){
+            return res.status(403).json({message: "User is not registered for the Chapter"});
         }
 
         const userFound = await User.findOneAndUpdate(

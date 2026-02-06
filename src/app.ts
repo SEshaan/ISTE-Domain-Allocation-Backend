@@ -32,6 +32,7 @@ app.use(apiKeyMiddleware);
 app.use('/user', UserRouter);
 app.use('/admin', AdminRouter);
 
+
 //Test Route
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'API is healthy' });
@@ -46,6 +47,8 @@ app.get('/secured/admin', verifyFirebaseToken, verifyAdmin, (req: Request, res: 
   console.log('Admin Info:', req.user);
   res.status(200).json({ status: 'OK', message: 'Secured Admin API is healthy' });
 });
+
+
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
