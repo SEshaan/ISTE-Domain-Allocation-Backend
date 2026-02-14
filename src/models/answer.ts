@@ -19,5 +19,3 @@ const responseSchema = new Schema({
 });
 
 export const Response = model('Response', responseSchema);
-export const TextAnswer = model('TextAnswer', textAnswerSchema);
-export const McqAnswer = model('McqAnswer', mcqAnswerSchema);

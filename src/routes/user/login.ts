@@ -20,7 +20,10 @@ export const loginOrSignup = async (req: Request, res: Response) => {
         const userFound = await User.findOneAndUpdate(
             {email: user.email},
             {
-                $setOnInsert: user
+                $setOnInsert: {
+                    ...user,
+                    selectedDomainIds: []
+                }
             },
             {
                 upsert: true,
@@ -28,7 +31,11 @@ export const loginOrSignup = async (req: Request, res: Response) => {
             }
         ).lean();
 
-        res.json({message: "Logged in successfully", user: userFound});
+        if(!userFound){
+            return res.status(500).json({message: "Error creating/checking user"});
+        }
+        
+        res.status(200).json({message: "Logged in successfully", user: userFound});
     }
     catch(err){
         console.error("Error while login: "+ err);

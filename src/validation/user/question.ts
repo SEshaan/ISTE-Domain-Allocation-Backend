@@ -1,0 +1,24 @@
+import { z } from "zod";
+import mongoose from "mongoose";
+
+export const submitResponseSchema = z.object({
+  questionarreId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+    message: "Invalid questionnaire ID",
+  }),
+  mcqAnswers: z.array(
+    z.object({
+      questionId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+        message: "Invalid MCQ question ID",
+      }),
+      selectedOptionIndex: z.number().int().min(0),
+    })
+  ).default([]),
+  textAnswers: z.array(
+    z.object({
+      questionId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+        message: "Invalid text question ID",
+      }),
+      answerText: z.string().min(1),
+    })
+  ).default([]),
+});

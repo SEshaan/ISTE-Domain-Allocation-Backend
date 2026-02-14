@@ -49,11 +49,15 @@ app.get('/secured/admin', verifyFirebaseToken, verifyAdmin, (req: Request, res: 
 });
 
 
-
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Global error handler:', err);
   res.status(500).json({ message: 'An unexpected error occurred.' });
+});
+
+//Global Route handler
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: 'Route not found' });
 });
 
 
