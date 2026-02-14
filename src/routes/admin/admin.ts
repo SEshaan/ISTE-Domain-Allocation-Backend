@@ -21,7 +21,7 @@ AdminRouter.get("/user/:domain", getUserByDomain);
 
 AdminRouter.get("/whitelist", getWhitelistedUsers);
 AdminRouter.post("/whitelist", addWhitelistedUsers);
-AdminRouter.delete("/whitelist", removeWhitelistedUsers);
+AdminRouter.delete("/whitelist/:whitelistId", removeWhitelistedUsers);
 
 AdminRouter.get("/domain", getAllDomains);
 AdminRouter.get("/domain/:domainId", getDomain);
