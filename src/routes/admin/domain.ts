@@ -1,9 +1,16 @@
 import type {Response, Request} from 'express';
 import { Domain } from '../../models/domain.js';
+import { addDomainSchema, updateDomainSchema } from '../../validation/admin/domain.js';
+import mongoose from 'mongoose';
 
-export const getDomain = async (req: Request, res: Response) => {
+export const getDomain = async (req: Request<{domainId: string}>, res: Response) => {
     try {
         const { domainId } = req.params;
+
+        if(!mongoose.Types.ObjectId.isValid(domainId)){
+            return res.status(400).json({ message: "Invalid domain ID" });
+        }
+
         const domain = await Domain.findById(domainId);
         if (!domain) {
             return res.status(404).json({message: "Domain not found"});
@@ -27,30 +34,35 @@ export const getAllDomains = async (req: Request, res: Response) => {
 
 export const addDomain = async (req: Request, res: Response) => {
     try {
-        const { name, description } = req.body;
-        if (!name || !description) {
-            return res.status(400).json({ message: "Name and description are required" });
+        const validation = addDomainSchema.safeParse(req.body);
+        if (!validation.success) {
+            console.error("Validation error:\n", validation.error);
+            return res.status(400).json({ message: "Send valid data" });
         }
 
-        const newDomain = await Domain.create({ name, description }).catch((error) => {
-            if (error.code === 11000) {
-                return res.status(400).json({ message: "Domain already exists" });
-            }
-            throw error;
-        });
-
-        if (!newDomain) return;
+        
+        const newDomain = await Domain.create(validation.data);
 
         res.status(201).json({message: "Domain added successfully", data: newDomain });
-    } catch (error) {
+    } catch (error:any) {
+        if (error.code === 11000) {
+            console.log("Domain already exists")
+            return res.status(400).json({ message: "Domain already exists" });
+        }
+
         console.error("Error adding domain:\n", error);
         res.status(500).json({message: "Error while adding Domain"});
     }
 };
 
-export const removeDomain = async (req: Request, res: Response) => {
+export const removeDomain = async (req: Request<{domainId: string}>, res: Response) => {
     try {
         const {domainId} = req.params;
+
+        if(!mongoose.Types.ObjectId.isValid(domainId)){
+            return res.status(400).json({ message: "Invalid domain ID" });
+        }  
+
         const deletedDomain = await Domain.findByIdAndDelete(domainId);
         if (!deletedDomain) {
             return res.status(404).json({ message: "Domain not found" });
@@ -62,19 +74,25 @@ export const removeDomain = async (req: Request, res: Response) => {
     }
 };
 
-export const updateDomain = async (req: Request, res: Response) => {
+export const updateDomain = async (req: Request<{domainId: string}>, res: Response) => {
     try {
-        const {domainId} = req.params;
-        const {name, description} = req.body;
+        const { domainId } = req.params;
 
-        if (!name || !description) {
-            return res.status(400).json({ message: "Name and description are required" });
+        if(!mongoose.Types.ObjectId.isValid(domainId)){
+            return res.status(400).json({ message: "Invalid domain ID" });
+        }
+
+        const validation = updateDomainSchema.safeParse(req.body);
+        
+        if (!validation.success) {
+            console.error("Validation error:\n", validation.error);
+            return res.status(400).json({ message: "Send valid data" });
         }
 
         const updatedDomain = await Domain.findByIdAndUpdate(
             domainId,
-            { name, description },
-            { new: true }
+            {$set: validation.data},
+            {new: true, runValidators: true}
         );
         if (!updatedDomain) {
             return res.status(404).json({ message: "Domain not found" });
