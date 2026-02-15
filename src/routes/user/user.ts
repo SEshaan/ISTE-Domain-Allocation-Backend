@@ -4,7 +4,7 @@ import { loginOrSignup } from "./login.js";
 import { verifyUser } from "../../middlewares/user.js";
 import { completeProfile, getProfile, updateProfile } from "./profile.js";
 import {getAllDomains, getDomain, applyForDomain} from "./domain.js";
-import { getQuestionnareByDomain, submitResponse} from "./question.js";
+import { getQuestionnareByDomain, getResponse, submitResponse, updateResponse} from "./question.js";
 import { getInterviews } from "./interview.js";
 
 export const UserRouter: Router = Router();
@@ -22,7 +22,10 @@ UserRouter.get("/domain/:domainId", getDomain);
 UserRouter.post("/domain/apply", applyForDomain);
 
 UserRouter.get("/questionnare/:domainId", getQuestionnareByDomain);
-UserRouter.post("/questionnare/submit/", submitResponse);
+
+UserRouter.get("/response", getResponse);
+UserRouter.post("/response", submitResponse);
+UserRouter.put("/response/:responseId", updateResponse);
 
 UserRouter.get("/interview", getInterviews);
 
