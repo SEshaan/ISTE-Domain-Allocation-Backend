@@ -3,7 +3,7 @@ import { verifyFirebaseToken } from "../../middlewares/firebase.js";
 import { loginOrSignup } from "./login.js";
 import { verifyUser } from "../../middlewares/user.js";
 import { completeProfile, getProfile, updateProfile } from "./profile.js";
-import {getAllDomains, getDomain, applyForDomain} from "./domain.js";
+import {getAllDomains, getDomain, applyForDomain, removeDomainApplication} from "./domain.js";
 import { getQuestionnareByDomain, getResponse, submitResponse, updateResponse} from "./question.js";
 import { getInterviews } from "./interview.js";
 
@@ -20,6 +20,7 @@ UserRouter.put("/profile/update", updateProfile);
 UserRouter.get("/domain", getAllDomains);
 UserRouter.get("/domain/:domainId", getDomain);
 UserRouter.post("/domain/apply", applyForDomain);
+UserRouter.post("/domain/remove", removeDomainApplication);
 
 UserRouter.get("/questionnare/:domainId", getQuestionnareByDomain);
 
